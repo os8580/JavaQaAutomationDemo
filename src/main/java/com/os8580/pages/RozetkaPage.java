@@ -65,6 +65,11 @@ public class RozetkaPage extends AbstractPage {
         // Click the "Add to Cart" button of the first product in the search results
         WebElement firstProduct = getSearchResults().get(0);
         WebElement addToCartButton = firstProduct.findElement(By.cssSelector(".catalog-grid__cell:nth-child(1) .goods-tile__prices:nth-child(7) svg:nth-child(1)"));
+
+        // Explicitly wait for the button to be clickable before clicking
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.elementToBeClickable(addToCartButton));
+
         addToCartButton.click();
     }
 
@@ -86,42 +91,58 @@ public class RozetkaPage extends AbstractPage {
     }
 
     public String getCartProductPrice() {
-        // Get the price of the product in the cart
-        WebElement productPriceElement = driver.findElement(By.cssSelector("body > app-root:nth-child(1) > rz-single-modal-window:nth-child(2) > div:nth-child(3) > div:nth-child(2) > rz-shopping-cart:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(2) > div:nth-child(1) > div:nth-child(2) > span:nth-child(1)"));
+        // Get the price of the product in the cart with explicit wait
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".cart-product__price")));
+        WebElement productPriceElement = driver.findElement(By.cssSelector(".cart-product__price"));
         return productPriceElement.getText();
     }
 
     public void increaseProductQuantityByOne() {
-        // Increase the quantity of the product in the cart by 1
         String initialPrice = getCartTotalPrice();
-        WebElement quantityIncreaseButton = driver.findElement(By.cssSelector("button[aria-label='Добавить ещё один товар']"));
+        WebElement quantityIncreaseButton = driver.findElement(By.cssSelector("button[data-testid='cart-counter-increment-button']"));
         quantityIncreaseButton.click();
         waitForCartTotalPriceToChange(initialPrice);
     }
 
     public void decreaseProductQuantityByOne() {
-        // Decrease the quantity of the product in the cart by 1
         String initialPrice = getCartTotalPrice();
-        WebElement quantityDecreaseButton = driver.findElement(By.cssSelector("button[aria-label='Убрать один товар']"));
+        WebElement quantityDecreaseButton = driver.findElement(By.cssSelector("button[data-testid='cart-counter-decrement-button']"));
         quantityDecreaseButton.click();
         waitForCartTotalPriceToChange(initialPrice);
     }
 
     public void setProductQuantity(int quantity) {
-        // Set the specified quantity for the product in the cart
         WebElement quantityInput = driver.findElement(By.cssSelector("input[data-testid='cart-counter-input']"));
+        String initialQuantity = quantityInput.getAttribute("value");
         quantityInput.clear();  // Clear the existing quantity
         quantityInput.sendKeys(Integer.toString(quantity));  // Set the new quantity
+
+        // Wait till the new quantity is reflected in the input box.
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30L));
+        wait.until(ExpectedConditions.not(ExpectedConditions.textToBe(By.cssSelector("input[data-testid='cart-counter-input']"), initialQuantity)));
+
+        String initialPrice = getCartTotalPrice();
+
+        // Wait for the cart total price to change from the initial price
+        wait = new WebDriverWait(driver, Duration.ofSeconds(10L));
+        wait.until(ExpectedConditions.not(ExpectedConditions.textToBe(By.cssSelector("div[class*='sum-price']"), initialPrice)));
     }
 
     public int getProductQuantity() {
         // Get the quantity of the product in the cart
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10L));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[data-testid='cart-counter-input']")));
+
         WebElement quantityElement = driver.findElement(By.cssSelector("[data-testid='cart-counter-input']"));
         String quantityText = quantityElement.getAttribute("value");
         return Integer.parseInt(quantityText);
     }
 
     public int getSingleProductPrice() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10L));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[class='cart-receipt__sum-price']")));
+
         WebElement productPriceElement = driver.findElement(By.cssSelector("div[class='cart-receipt__sum-price']"));
         String productPriceText = productPriceElement.getText().replaceAll("\\D+", ""); // Remove non-numeric characters
         return Integer.parseInt(productPriceText) / getProductQuantity();
@@ -135,7 +156,7 @@ public class RozetkaPage extends AbstractPage {
 
     private void waitForCartTotalPriceToChange(String initialPrice) {
         // Wait for the cart total price to change from the initial price
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10L));
         wait.until(ExpectedConditions.not(ExpectedConditions.textToBe(By.cssSelector("div[class*='sum-price']"), initialPrice)));
     }
 }

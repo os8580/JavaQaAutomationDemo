@@ -103,7 +103,7 @@ public class RozetkaTestSuite {
         Assert.assertEquals(increasedQuantityByThree, 4);
         Assert.assertEquals(increasedPriceByThree, singleProductPrice * increasedQuantityByThree);
 
-        // Set product quantity to 7
+//        // Set product quantity to 7
         rozetkaPage.setProductQuantity(7);
         int setQuantity = rozetkaPage.getProductQuantity();
         int setPrice = rozetkaPage.getSingleProductPrice() * rozetkaPage.getProductQuantity();
