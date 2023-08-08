@@ -107,6 +107,13 @@ public class RozetkaPage extends AbstractPage {
         waitForCartTotalPriceToChange(initialPrice);
     }
 
+    public void setProductQuantity(int quantity) {
+        // Set the specified quantity for the product in the cart
+        WebElement quantityInput = driver.findElement(By.cssSelector("input[data-testid='cart-counter-input']"));
+        quantityInput.clear();  // Clear the existing quantity
+        quantityInput.sendKeys(Integer.toString(quantity));  // Set the new quantity
+    }
+
     public int getProductQuantity() {
         // Get the quantity of the product in the cart
         WebElement quantityElement = driver.findElement(By.cssSelector("[data-testid='cart-counter-input']"));
@@ -114,11 +121,10 @@ public class RozetkaPage extends AbstractPage {
         return Integer.parseInt(quantityText);
     }
 
-    public int getProductPriceNumeric() {
-        // Get the numeric price of the product in the cart
+    public int getSingleProductPrice() {
         WebElement productPriceElement = driver.findElement(By.cssSelector("div[class='cart-receipt__sum-price']"));
         String productPriceText = productPriceElement.getText().replaceAll("\\D+", ""); // Remove non-numeric characters
-        return Integer.parseInt(productPriceText);
+        return Integer.parseInt(productPriceText) / getProductQuantity();
     }
 
     private String getCartTotalPrice() {
