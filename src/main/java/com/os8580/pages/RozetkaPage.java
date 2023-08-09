@@ -75,7 +75,7 @@ public class RozetkaPage extends AbstractPage {
 
     public void openCart() {
         // Open the cart by clicking the cart button
-        driver.findElement(By.cssSelector(".catalog-grid__cell:nth-child(1) .goods-tile__prices:nth-child(7) svg:nth-child(1)")).click();
+        driver.findElement(By.cssSelector("li[class*='item--cart']")).click();
     }
 
     public void waitForTextVisibility(String text) {
