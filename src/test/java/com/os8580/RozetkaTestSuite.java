@@ -21,7 +21,6 @@ public class RozetkaTestSuite {
     public void setupDriver() {
         // Setting up Chrome driver with start-maximized option
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("--start-maximized");
         pageFactory = new PageFactory(new ChromeDriver(options));
     }
 
