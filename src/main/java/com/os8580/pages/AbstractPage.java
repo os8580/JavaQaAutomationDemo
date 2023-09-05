@@ -18,19 +18,21 @@ public abstract class AbstractPage {
         this.URL = URL;
     }
 
-    public void loadPage() {
-        // Load the page by navigating to the URL
-        driver.get("about:blank");
+    // Navigate to the specified URL
+    private void navigateToUrl(String URL) {
         driver.get(URL);
     }
 
+    public void loadPage() {
+        navigateToUrl("about:blank");
+        navigateToUrl(this.URL);
+    }
+
     public boolean isPageLoaded() {
-        // Check if the page is fully loaded by verifying the URL
         return new WebDriverWait(driver, Duration.ofSeconds(45L)).until(ExpectedConditions.urlToBe(URL));
     }
 
     public boolean isTextPresent(String text) {
-        // Check if the specified text is present on the page
         WebElement bodyElement = driver.findElement(By.tagName("body"));
         return bodyElement.getText().contains(text);
     }

@@ -25,7 +25,7 @@ public class RozetkaTestSuite {
     }
 
     @Test
-    public void testRozetkaUsingPageObjectWithChrome() {
+    public void testRozetka() {
         // Create pages
         GooglePage googlePage = (GooglePage) pageFactory.get(Pages.GOOGLE);
         RozetkaPage rozetkaPage = (RozetkaPage) pageFactory.get(Pages.ROZETKA);

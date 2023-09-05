@@ -4,10 +4,8 @@ package com.os8580.pages;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -21,14 +19,15 @@ public class GooglePage extends AbstractPage {
     }
 
     public void acceptCookiesIfPresent() {
-        // Check if the buttons are present on the page
-        List<WebElement> buttons = new WebDriverWait(driver, Duration.ofSeconds(5L))
-                .until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.tagName("button")));
+        try {
+            List<WebElement> buttons = new WebDriverWait(driver, Duration.ofSeconds(5L))
+                    .until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.tagName("button")));
 
-        // If there are 5 buttons, it indicates the presence of the cookies acceptance prompt
-        if (buttons.size() == 5) {
-            // Click on the 4th button to accept the cookies
-            buttons.get(3).click();
+            if (buttons.size() == 5) {
+                buttons.get(3).click();
+            }
+        } catch (TimeoutException e) {
+            //
         }
     }
 

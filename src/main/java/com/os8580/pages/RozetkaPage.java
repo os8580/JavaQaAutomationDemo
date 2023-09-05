@@ -64,7 +64,7 @@ public class RozetkaPage extends AbstractPage {
     public void clickAddToCartButton() {
         // Click the "Add to Cart" button of the first product in the search results
         WebElement firstProduct = getSearchResults().get(0);
-        WebElement addToCartButton = firstProduct.findElement(By.cssSelector(".catalog-grid__cell:nth-child(1) .goods-tile__prices:nth-child(7) svg:nth-child(1)"));
+        WebElement addToCartButton = firstProduct.findElement(By.cssSelector("html > body > app-root > div > div > rz-category > div > main > rz-catalog > div > div > section > rz-grid > ul > li:nth-of-type(1) > rz-catalog-tile > app-goods-tile-default > div > div:nth-of-type(2) > div:nth-of-type(4) > div:nth-of-type(2) > app-buy-button > button"));
 
         // Explicitly wait for the button to be clickable before clicking
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
