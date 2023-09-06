@@ -85,7 +85,10 @@ public class RozetkaPage extends AbstractPage {
     }
 
     public String getCartProductName() {
-        // Get the name of the product in the cart
+        // Get the name of the product in the cart with explicit wait
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".cart-product__title")));
+
         WebElement productNameElement = driver.findElement(By.cssSelector(".cart-product__title"));
         return productNameElement.getText();
     }

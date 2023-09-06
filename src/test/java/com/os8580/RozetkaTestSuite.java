@@ -19,7 +19,7 @@ public class RozetkaTestSuite {
 
     @BeforeSuite
     public void setupDriver() {
-        // Setting up Chrome driver with start-maximized option
+        // Setting up Chrome driver
         ChromeOptions options = new ChromeOptions();
         pageFactory = new PageFactory(new ChromeDriver(options));
     }
@@ -58,7 +58,7 @@ public class RozetkaTestSuite {
         rozetkaPage.clickAddToCartButton();
         rozetkaPage.waitForTextVisibility("Товар добавлен в корзину");
         rozetkaPage.openCart();
-        rozetkaPage.waitForTextVisibility("Вместе дешевле");
+        rozetkaPage.waitForTextVisibility("Также рекомендуем");
 
         // Get product details from the cart
         Map<String, Object> productDetailsInCart = new HashMap<>();
