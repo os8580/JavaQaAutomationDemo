@@ -17,9 +17,9 @@ The automation framework is designed using Page Object Model (POM) design patter
 
 The repository contains a `pom.xml` file, which is a project configuration file for Maven. You can use Maven to run the test suite using the `mvn test` command in the terminal.
 
-\`\`\`bash
+```bash
 mvn test
-\`\`\`
+```
 
 ### Project Structure
 
